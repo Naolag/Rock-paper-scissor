@@ -1,0 +1,30 @@
+body{
+    background-color: black;
+    color: white;
+    font-family: 'Courier New', Courier, monospace;
+}
+.output{
+    display: flex;
+}
+.rps{
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+}
+button{
+    height: 100px;
+    width: 150px;
+    font-size: large;
+    background-color: rgba(57, 245, 0, 0.192);
+    color: white;
+}
+.display{
+    margin-top: 20px;
+    height: 270px;
+    width: 400px;
+}
+#start{
+    width: 60px;
+    height: 30px;
+    background-color: blueviolet;
+}
