@@ -1,9 +1,24 @@
+const textArea = document.querySelector(".display");
+const rockClk = document.querySelector("#rock");
+const paperClk = document.querySelector("#paper");
+const scissorClk = document.querySelector("#scissor");
+const game=document.querySelector(".game")
+
+textArea.value = "This game will have 5 rounds. \nTo start the game, please press start\n";
+
+const start = document.querySelector("#start");
+const restart=document.createElement("button")
+restart.style.width="90px";
+restart.style.height="30px";
+restart.style.accentColor.backgroundcolor="blueviolet";
+restart.textContent="Restart";
+
 function getrandom(min, max) {
     return Math.floor(Math.random() * (max - min) + min);
 }
 
 function getComputerChoice() {
-    let x = getrandom(1, 4); 
+    let x = getrandom(1, 4);
     let computerChoice;
     if (x === 1) computerChoice = "rock";
     else if (x === 2) computerChoice = "paper";
@@ -11,16 +26,7 @@ function getComputerChoice() {
     return computerChoice;
 }
 
-function getHumanChoice() {
-    let humanChoice = prompt("Let's play Rock, Paper, Scissors! Choose rock, paper, or scissor:");
-    if (humanChoice.toLowerCase() === "rock" || humanChoice.toLowerCase() === "paper" || humanChoice.toLowerCase() === "scissor") {
-        return humanChoice.toLowerCase();
-    } else {
-        console.log("Something is wrong, please try again.");
-        return getHumanChoice();
-    }
-}
-
+let humanChoice;
 let humanPlayer = 0;
 let computerPlayer = 0;
 
@@ -28,53 +34,80 @@ function playRound(humanChoice, computerChoice) {
     switch (humanChoice) {
         case "rock":
             if (computerChoice === "rock")
-                console.log("Oops, it's a tie! Both chose rock.");
+                textArea.value += "\nOops, it's a tie! Both chose rock.";
             else if (computerChoice === "paper") {
-                console.log("You lose! Paper wraps rock.");
+                textArea.value += "\nYou lose! Paper wraps rock.";
                 computerPlayer += 1;
             } else if (computerChoice === "scissor") {
-                console.log("You win! Rock beats scissor.");
+                textArea.value += "\nYou win! Rock beats scissor.";
                 humanPlayer += 1;
             }
             break;
         case "paper":
             if (computerChoice === "rock") {
-                console.log("You win! Paper wraps rock.");
+                textArea.value += "\nYou win! Paper wraps rock.";
                 humanPlayer += 1;
             } else if (computerChoice === "paper")
-                console.log("Oops, it's a tie! Both chose paper.");
+                textArea.value += "\nOops, it's a tie! Both chose paper.";
             else if (computerChoice === "scissor") {
-                console.log("You lose! Scissor cuts paper.");
+                textArea.value += "\nYou lose! Scissor cuts paper.";
                 computerPlayer += 1;
             }
             break;
         case "scissor":
             if (computerChoice === "rock") {
-                console.log("You lose! Rock beats scissor.");
+                textArea.value += "\nYou lose! Rock beats scissor.";
                 computerPlayer += 1;
             } else if (computerChoice === "paper") {
-                console.log("You win! Scissor cuts paper.");
+                textArea.value += "\nYou win! Scissor cuts paper.";
                 humanPlayer += 1;
             } else if (computerChoice === "scissor")
-                console.log("Oops, it's a tie! Both chose scissor.");
+                textArea.value += "\nOops, it's a tie! Both chose scissor.";
             break;
     }
 }
-function playgame(){
-for (let i = 1; i <= 5; i++) {
-    console.log(`The game will have 5 rounds. This is round ${i}.`);
-    let humanChoice = getHumanChoice();
-    let computerChoice = getComputerChoice();
-    playRound(humanChoice, computerChoice);
-    console.log(`Scores for this round are: Human: ${humanPlayer}, Computer: ${computerPlayer}`);
+
+function playgame() {
+    let round = 1;
+    humanPlayer = 0;
+    computerPlayer = 0;
+
+    textArea.value = "The game will have 5 rounds.\nChoose Rock, Paper, or Scissors.";
+
+    const buttons = [rockClk, paperClk, scissorClk];
+    buttons.forEach((button) => {
+        button.addEventListener("click", () => {
+            if (round <= 5) {
+                restart.remove();
+                textArea.value=" ";
+                textArea.value += `\nRound ${round}: You chose ${button.id}`;
+                humanChoice = button.id;  // Sets human choice based on the button clicked
+                let computerChoice = getComputerChoice();
+                playRound(humanChoice, computerChoice);
+                textArea.value += `\nScore: You: ${humanPlayer}, Computer: ${computerPlayer}`;
+                round++;
+            }
+
+            if (round > 5) {
+                textArea.value=" ";
+                game.appendChild(restart);
+                restart.addEventListener("click",playgame);
+                
+                if (humanPlayer > computerPlayer) {
+                    textArea.value += `\nCongratulations! You win! with the score of ${humanPlayer}`;
+                } else if (humanPlayer < computerPlayer) {
+                    textArea.value += `\nSorry! You lost the game. with the score of ${humanPlayer}`;
+                } else {
+                    textArea.value += `\nIt was a tie! with the score of ${humanPlayer}`;
+                }
+                textArea.value +="\nIf you want to restart the game click Restart";
+            }
+        });
+    });
+
+    // Remove the start button after game starts
+    start.remove();
+    
 }
 
-if (humanPlayer > computerPlayer)
-    console.log(`Congratulations! You win with a total score of ${humanPlayer}.`);
-else if (humanPlayer < computerPlayer)
-    console.log(`Sorry! You lost the game with a total score of ${humanPlayer}.`);
-else
-    console.log(`It was a tie with a score of ${humanPlayer}.`);
-}
-
-playgame();
+start.addEventListener("click", playgame); // Starts the game when 'Start Game' button is clicked

@@ -4,12 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JavaScript Example</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-   
-    <button id="changeText">Click Me</button>
-
-    <div id="output"></div>
+    <p >Let's play Rock Paper Scissor</p>
+    <div class="output">
+        <div class="rps">
+            <button id="rock">Rock</button>
+            <button id="paper">Paper</button>
+             <button id="scissor">Scissor</button>
+        </div>
+        <div class="game">
+            <textarea class="display" readonly></textarea>
+            <button id="start">Start</button>
+        </div>
+   </div>
+</div>
+    
 
     <!-- Link to external JavaScript file -->
     <script src="script.js"></script>
